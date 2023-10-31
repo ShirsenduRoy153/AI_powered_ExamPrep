@@ -1,77 +1,64 @@
-const express = require("express")
-const app = express()
-const path = require("path")
-const hbs = require("hbs")
+const Sequelize = require('sequelize');
+const express = require('express');
+const router = express.Router();
 
+const { test } = require('../models');
 
-const tempelatePath = path.join(__dirname, "templates")
-
-app.use(express.json())
-app.set("view engine", "hbs")
-app.set("views", tempelatePath)
-app.use(express.urlencoded({ extended: false }))
-
-
-
-//------------------------------MAIN.js--------------------------//
-const { spawn } = require('child_process');
-const { timeStamp } = require('console');
-
-function runPythonFunction() {
-    const pythonProcess = spawn('python', ['final.py']);
-
-    // Listen for the standard output of the Python script
-    pythonProcess.stdout.on('data', (data) => {
-        const result = data.toString().trim();
-        console.log('Result:', result);
-        //hi(result);
-    });
-
-    // Listen for errors, if any
-    pythonProcess.stderr.on('data', (data) => {
-        console.error('Error:', data.toString());
-    });
-
-    // Handle process exit
-    pythonProcess.on('close', (code) => {
-        console.log(`Python script exited with code ${code}`);
-    });
-    console.log("listening . . .")
-}
-// Call the Python function
-//runPythonFunction();
-
-//----------------------------------------------//this part is for DATABASE calling
-
-
-
-
-/*function hi(result) {
-    rs = "helllllll" + result
-    console.log("--extra added------",
-        rs)
-}*/
-//-----------------------------------------------------//
-
-//-------------------GET-------------------//
-
-app.get('/', (req, res) => {
-    res.render('voice')
+router.get("/admin", async(req, res, next) => {
+    res.render('admin')
 })
 
-app.get('/voice', (req, res) => {
-    res.render('voice')
+router.post("/add_q", async(req, res, next) => {
+    console.log(req.body)
+    const q_id = req.body.q_id
+    const q = req.body.q
+    const o1 = req.body.o1
+    const o2 = req.body.o2
+    const o3 = req.body.o3
+    const o4 = req.body.o4
+    const a = req.body.a
+    await test.create({ q_id, q, o1, o2, o3, o4, a })
+    res.json({
+        success: true,
+        code: 200
+    })
 })
 
-//-------------------POST-----------------//
+//-------Student----------//
 
-app.post('/voice', async(req, res) => {
-
-    console.log("hello")
-    await runPythonFunction();
-    res.render("voice")
+router.get("/mcq-m", async(req, res, next) => {
+    const tests = await test.findAll({
+        raw: true
+    })
+    res.render('mcq-m', { title: 'mcq-m', tests })
 })
 
-app.listen(3000, () => {
-    console.log("Port Connected...")
+router.post("/mcq-m_post", async(req, res, next) => {
+    score = 0
+    console.log(req.body.a)
+    console.log(req.body.ak)
+    if (req.body.a[0] == req.body.ak[0]) {
+        score += 1
+    }
+    if (req.body.a[1] == req.body.ak[1]) {
+        score += 1
+    }
+    if (req.body.a[2] == req.body.ak[2]) {
+        score += 1
+    }
+    if (req.body.a[3] == req.body.ak[3]) {
+        score += 1
+    }
+    if (req.body.a[4] == req.body.ak[4]) {
+        score += 1
+    }
+
+    console.log("S C O R E = ", score)
+
+    res.json({
+        success: true,
+        code: 200
+    })
 })
+
+module.exports = router;
