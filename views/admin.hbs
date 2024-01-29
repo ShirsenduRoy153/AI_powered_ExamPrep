@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom, #bdc3c7, #2c3e50);
+            margin: 0;
+            padding: 0;
+            background-size: cover;
+        }
+
+        .logo {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .logo img {
+            width: 150px;
+            height: auto;
+        }
+
+        .users-heading1 {
+            text-align: center;
+            font-size: 32px;
+            margin-top: 30px;
+            color: #fff;
+        }
+
+        .users-heading2 {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .product-btn {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .product-btn:hover {
+            background-color: #45a049;
+        }
+
+        .container1 {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%;
+            border-radius: 5px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            color: #333;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+
+        #register_btn {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        #register_btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="https://via.placeholder.com/150" alt="logo">
+        </div>
+
+        <div class="users-heading1">
+            Admin Panel
+            <span class="users-symbol">&lt;/&gt;</span>
+        </div>
+
+        <div class="users-heading2">
+            <button type="button" id="mcq_id" class="btn btn-success product-btn"><i class="fas fa-plus"></i> Add
+                Question</button>
+        </div>
+
+        <!-- MODAL -->
+        <div class="container1">
+            <div id="mcq_modal" class="modal" style="display: none;">
+                <div class="modal-content" style="background-color: #fefefe; color: #333;">
+                    <span class="close">&times;</span>
+                    <h2 style="color: #4CAF50;">ADD Question</h2>
+                    <form id="mcq_form">
+                        <div class="form-group">
+                            <label for="lastname">Question :</label>
+                            <input type="text" id="q" name="q">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Option 1 :</label>
+                            <input type="text" id="o1" name="o1">
+                        </div>
+                        <div class="form-group">
+                            <label for="phoneno">Option 2 :</label>
+                            <input type="text" id="o2" name="o2">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Option 3 :</label>
+                            <input type="text" id="o3" name="o3">
+                        </div>
+                        <div class="form-group">
+                            <label for="phoneno">Option 4 :</label>
+                            <input type="text" id="o4" name="o4">
+                        </div>
+                        <div class="form-group">
+                            <label for="username">Answer :</label>
+                            <input type="text" id="a" name="a">
+                        </div>
+                        <div class="form-group">
+                            <label for="username">Topic :</label>
+                            <input type="text" id="t" name="t">
+                        </div>
+                        <button type="submit" id="register_btn" class="btn btn-success"><i class="fas fa-check"></i>
+                            Done</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+    <script>
+        $(document).on('click', '#mcq_id', function () {
+            $("#mcq_modal").show();
+        });
+
+        $(".close").on("click", function () {
+            $("#mcq_modal").hide();
+        });
+
+        $(document).ready(function () {
+            $("#mcq_form").validate({
+                submitHandler: function (form) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/add_q",
+                        data: $("#mcq_form").serialize(),
+                        success: function (response) {
+                            if (response.success == true) {
+                                alert("Form submitted successfully.");
+                                window.location.reload();
+                            } else {
+                                alert(response.message);
+                            }
+                        }
+                    });
+                }
+            })
+        })
+    </script>
+</body>
+
+</html>
