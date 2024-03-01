@@ -1,34 +1,34 @@
 'use strict';
 const {
-  Model
+    Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class status extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
+    class status extends Model {
+        /**
+         * Helper method for defining associations.
+         * This method is not a part of Sequelize lifecycle.
+         * The `models/index` file will call this method automatically.
+         */
+        static associate(models) {
+            // define association here
+        }
     }
-  }
-  status.init({
-    currenttopic: DataTypes.STRING,
-    currentscore: DataTypes.INTEGER,
-    linklist: DataTypes.INTEGER,
-    stack: DataTypes.INTEGER,
-    queue: DataTypes.INTEGER,
-    tree: DataTypes.INTEGER,
-    graph: DataTypes.INTEGER,
-    hashing: DataTypes.INTEGER,
-    heap: DataTypes.INTEGER,
-    sorting: DataTypes.INTEGER,
-    searching: DataTypes.INTEGER,
-    dyanamicprograming: DataTypes.INTEGER
-  }, {
-    sequelize,
-    modelName: 'status',
-  });
-  return status;
+    status.init({
+        currenttopic: DataTypes.STRING,
+        currentscore: DataTypes.INTEGER,
+        linkedlist: DataTypes.INTEGER,
+        stack: DataTypes.INTEGER,
+        queue: DataTypes.INTEGER,
+        tree: DataTypes.INTEGER,
+        graph: DataTypes.INTEGER,
+        hashing: DataTypes.INTEGER,
+        heap: DataTypes.INTEGER,
+        sorting: DataTypes.INTEGER,
+        searching: DataTypes.INTEGER,
+        dyanamicprograming: DataTypes.INTEGER
+    }, {
+        sequelize,
+        modelName: 'status',
+    });
+    return status;
 };

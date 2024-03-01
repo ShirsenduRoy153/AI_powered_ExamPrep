@@ -16,7 +16,7 @@ function runPythonFunction(topic, marks) {
         return Promise.reject(new Error('Invalid topic or marks'));
     }
     return new Promise((resolve, reject) => {
-        const pythonProcess = spawn('python', ['python/new_graph_working.py', topic, marks]);
+        const pythonProcess = spawn('python', ['python/graph.py', topic, marks]);
         let output = '';
 
         // Capture the standard output

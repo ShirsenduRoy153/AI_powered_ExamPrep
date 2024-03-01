@@ -17,34 +17,50 @@ try:
     print("MySQL Connection Established")
     db_cursor = db_conn.cursor()
 
+    db_cursor.execute("SELECT linkedlist,stack,queue,tree,graph,hashing,heap,sorting,searching,dyanamicprograming FROM statuses WHERE id = 1")
+    result = db_cursor.fetchone()
+
     topic = sys.argv[1]
-    marks = int(sys.argv[2])
-    marks_threshold = 3  # Set the threshold to 3
+    marks = sys.argv[2]
+    marks = int(marks)
+    marks_threshold = 3
+
+    print("TOPIC IN LOWER CASE : " , topic.lower())
+
+    query = f"UPDATE statuses SET {topic.lower()} = %s, currenttopic = %s, currentscore = %s WHERE id = 1"
+
+    values = (marks, topic, marks)
+    db_cursor.execute(query, values)
+    db_conn.commit()
+
+    print(f"Updated {topic.lower()} to: {marks}, currenttopic to: {topic}, and currentscore to: {marks}")
+
+
 
     nodes = {
-        'Linked List': 5,
-        'Stack': 5,
-        'Queue': 5,
-        'Tree': 5,
-        'Graph': 3,
-        'Hashing': 5,
-        'Heap': 2,
-        'Sorting': 3,
-        'Searching': 5,
-        'Dynamic Programming': 5,
+        'LinkedList': result[0],
+        'Stack': result[1],
+        'Queue': result[2],
+        'Tree': result[3],
+        'Graph': result[4],
+        'Hashing': result[5],
+        'Heap': result[6],
+        'Sorting': result[7],
+        'Searching': result[8],
+        'DynamicProgramming': result[9],
     }
 
     dependencies = {
-        'Linked List': ['Stack', 'Queue'],
+        'LinkedList': ['Stack', 'Queue'],
         'Stack': ['Tree', 'Graph'],
         'Queue': ['Hashing', 'Heap'],
         'Tree': ['Sorting', 'Searching'],
-        'Graph': ['Heap', 'Dynamic Programming'],
+        'Graph': ['Heap', 'DynamicProgramming'],
         'Hashing': [],
         'Heap': [],
         'Sorting': [],
         'Searching': [],
-        'Dynamic Programming': [],
+        'DynamicProgramming': [],
     }
 
     for node in nodes:
@@ -80,7 +96,7 @@ try:
                 if neighbor not in visited:
                     dfs_traversal(graph, neighbor, visited, traversal_list, marks_threshold)
 
-    start_node = 'Linked List'
+    start_node = 'LinkedList'
     traversal_result = []
     dfs_traversal(G, start_node, set(), traversal_result, marks_threshold)
 
@@ -88,14 +104,15 @@ try:
         if node_info['marks'] < marks_threshold:
             print(f"Name: {node_info['name']}, Marks: {node_info['marks']}")
             query = "UPDATE `a3`.`statuses` SET `currenttopic` = %s, `currentscore` = %s WHERE `id` = 1"
+            #eai currenttopic er subject tar marks o change korte hobe borohate naki choto haate lekha seita dekhte hobr
             values = (node_info['name'], node_info['marks'])
             db_cursor.execute(query, values)
             db_conn.commit()
             break
 
-except mysql.connector.Error as err:
-    print(f"Error: {err}")
-    sys.exit(1)
+# except mysql.connector.Error as err:
+#     print(f"Error: {err}")
+#     sys.exit(1)
 
 finally:
     if db_cursor:

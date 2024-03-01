@@ -1,31 +1,29 @@
 import pandas as pd
 
 subject_details = {
-    'Engineering Mathematics': {'priority': 2, 'difficulty': 'medium'},
-    'Digital Logic': {'priority': 3, 'difficulty': 'hard'},
-    'Computer Organization and Architecture': {'priority': 1, 'difficulty': 'easy'},
-    'Programming and Data Structures': {'priority': 4, 'difficulty': 'medium'},
-    'Algorithms': {'priority': 5, 'difficulty': 'hard'},
-    'Theory of Computation': {'priority': 3, 'difficulty': 'medium'},
-    'Compiler Design': {'priority': 2, 'difficulty': 'hard'},
-    'Operating System': {'priority': 4, 'difficulty': 'medium'},
-    'Databases': {'priority': 2, 'difficulty': 'medium'},
-    'Computer Networks': {'priority': 3, 'difficulty': 'medium'},
-    'Software Engineering': {'priority': 1, 'difficulty': 'easy'}
+    'Linked List': {'priority': 2, 'difficulty': 'medium'},
+    'Stack': {'priority': 3, 'difficulty': 'hard'},
+    'Queue': {'priority': 1, 'difficulty': 'easy'},
+    'Tree': {'priority': 4, 'difficulty': 'medium'},
+    'Graph': {'priority': 5, 'difficulty': 'hard'},
+    'Hashing': {'priority': 3, 'difficulty': 'medium'},
+    'Heap': {'priority': 2, 'difficulty': 'hard'},
+    'Sorting': {'priority': 4, 'difficulty': 'medium'},
+    'Searching': {'priority': 2, 'difficulty': 'medium'},
+    'Dynamic Programming': {'priority': 1, 'difficulty': 'easy'}
 }
 
 user_data = {
-    'Engineering Mathematics': {'peak_concentration_hours': 5, 'stress_level': 3},
-    'Digital Logic': {'peak_concentration_hours': 4, 'stress_level': 2},
-    'Computer Organization and Architecture': {'peak_concentration_hours': 6, 'stress_level': 1},
-    'Programming and Data Structures': {'peak_concentration_hours': 3, 'stress_level': 4},
-    'Algorithms': {'peak_concentration_hours': 5, 'stress_level': 3},
-    'Theory of Computation': {'peak_concentration_hours': 4, 'stress_level': 2},
-    'Compiler Design': {'peak_concentration_hours': 6, 'stress_level': 1},
-    'Operating System': {'peak_concentration_hours': 3, 'stress_level': 4},
-    'Databases': {'peak_concentration_hours': 5, 'stress_level': 3},
-    'Computer Networks': {'peak_concentration_hours': 4, 'stress_level': 2},
-    'Software Engineering': {'peak_concentration_hours': 6, 'stress_level': 1}
+    'Linked List': {'score': 1, 'rating': 1},
+    'Stack': {'score': 4, 'rating': 2},
+    'Queue': {'score': 5, 'rating': 1},
+    'Tree': {'score': 3, 'rating': 4},
+    'Graph': {'score': 5, 'rating': 3},
+    'Hashing': {'score': 4, 'rating': 2},
+    'Heap': {'score': 5, 'rating': 1},
+    'Sorting': {'score': 3, 'rating': 4},
+    'Searching': {'score': 0, 'rating': 3},
+    'Dynamic Programming': {'score': 3, 'rating': 4}
 }
 
 data = []
@@ -33,15 +31,22 @@ data = []
 for subject, details in subject_details.items():
     priority = details['priority']
     difficulty = details['difficulty']
-    peak_concentration = user_data[subject]['peak_concentration_hours']
-    stress_level = user_data[subject]['stress_level']
+    peak_concentration = user_data[subject]['score']
+    rating = user_data[subject]['rating']
     
-    adjusted_priority = priority - (difficulty == 'hard') * 0.5
-    adjusted_priority -= (adjusted_priority * (stress_level / 10))
-    adjusted_priority *= (peak_concentration / 6) 
+    # Adjust priority based on difficulty
+    if difficulty == 'hard':
+        priority += 0.5
+    elif difficulty == 'medium':
+        priority += 0.35
+    elif difficulty == 'easy':
+        priority += 0.2
     
-    data.append([subject, priority, difficulty, peak_concentration, stress_level, round(adjusted_priority, 2)])
+    # Adjust priority based on score and rating (lower rating and lower marks result in higher priority)
+    adjusted_priority = priority * (1 - peak_concentration / 6) * (1 - rating / 10)
+    
+    data.append([subject, round(adjusted_priority, 2)])
 
-table = pd.DataFrame(data, columns=['Subject', 'Priority Score', 'Difficulty Level', 'Peak Concentration Hours', 'Stress Level', 'Adjusted Priority'])
+table = pd.DataFrame(data, columns=['Subject', 'Adjusted Priority'])
 
 print(table)
