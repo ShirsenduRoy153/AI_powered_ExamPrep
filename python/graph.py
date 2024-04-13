@@ -1,7 +1,6 @@
 import sys
 import mysql.connector
 import networkx as nx
-import matplotlib.pyplot as plt
 
 db_config = {
     'host': '127.0.0.1',
@@ -10,14 +9,12 @@ db_config = {
     'database': 'a3'
 }
 
-db_cursor = None
-
 try:
     db_conn = mysql.connector.connect(**db_config)
     print("MySQL Connection Established")
     db_cursor = db_conn.cursor()
 
-    db_cursor.execute("SELECT linkedlist,stack,queue,tree,graph,hashing,heap,sorting,searching,dyanamicprograming FROM statuses WHERE id = 1")
+    db_cursor.execute("SELECT linkedlist,stack,queue,tree,graph,hashing,heap,sorting,searching,dynamicprogramming FROM statuses WHERE id = 1")
     result = db_cursor.fetchone()
 
     topic = sys.argv[1]
@@ -25,48 +22,42 @@ try:
     marks = int(marks)
     marks_threshold = 3
 
-    print("TOPIC IN LOWER CASE : " , topic.lower())
+    print("TOPIC IN LOWER CASE : ", topic.lower())
 
+    # Collect updates in a list
+    updates = []
+    
     query = f"UPDATE statuses SET {topic.lower()} = %s, currenttopic = %s, currentscore = %s WHERE id = 1"
-
     values = (marks, topic, marks)
-    db_cursor.execute(query, values)
-    db_conn.commit()
-
-    print(f"Updated {topic.lower()} to: {marks}, currenttopic to: {topic}, and currentscore to: {marks}")
-
-
+    updates.append((query, values))
 
     nodes = {
-        'LinkedList': result[0],
-        'Stack': result[1],
-        'Queue': result[2],
-        'Tree': result[3],
-        'Graph': result[4],
-        'Hashing': result[5],
-        'Heap': result[6],
-        'Sorting': result[7],
-        'Searching': result[8],
-        'DynamicProgramming': result[9],
+        'linkedlist': result[0],
+        'stack': result[1],
+        'queue': result[2],
+        'tree': result[3],
+        'graph': result[4],
+        'hashing': result[5],
+        'heap': result[6],
+        'sorting': result[7],
+        'searching': result[8],
+        'dynamicprogramming': result[9],
     }
 
     dependencies = {
-        'LinkedList': ['Stack', 'Queue'],
-        'Stack': ['Tree', 'Graph'],
-        'Queue': ['Hashing', 'Heap'],
-        'Tree': ['Sorting', 'Searching'],
-        'Graph': ['Heap', 'DynamicProgramming'],
-        'Hashing': [],
-        'Heap': [],
-        'Sorting': [],
-        'Searching': [],
-        'DynamicProgramming': [],
+        'linkedlist': ['stack', 'queue'],
+        'stack': ['tree', 'graph'],
+        'queue': ['hashing', 'heap'],
+        'tree': ['sorting', 'searching'],
+        'graph': ['heap', 'dynamicprogramming'],
+        'hashing': [],
+        'heap': [],
+        'sorting': [],
+        'searching': [],
+        'dynamicprogramming': [],
     }
 
-    for node in nodes:
-        if node == topic:
-            nodes[node] = marks
-
+    # Create the graph once
     G = nx.DiGraph()
 
     for node, mark in nodes.items():
@@ -77,12 +68,6 @@ try:
             G.add_edge(node, dependent_node)
 
     pos = nx.circular_layout(G)
-    nx.draw(G, pos, with_labels=True, font_weight='bold', node_size=2000, node_color='skyblue', arrowsize=20)
-
-    node_labels = {node: f"{node}" for node in nodes}
-    nx.draw_networkx_labels(G, pos, labels=node_labels)
-
-    plt.show()
 
     def dfs_traversal(graph, current_node, visited, traversal_list, marks_threshold):
         node_info = {'name': current_node, 'marks': graph.nodes[current_node]['mark']}
@@ -96,23 +81,23 @@ try:
                 if neighbor not in visited:
                     dfs_traversal(graph, neighbor, visited, traversal_list, marks_threshold)
 
-    start_node = 'LinkedList'
+    start_node = 'linkedlist'
     traversal_result = []
     dfs_traversal(G, start_node, set(), traversal_result, marks_threshold)
 
     for node_info in traversal_result:
         if node_info['marks'] < marks_threshold:
             print(f"Name: {node_info['name']}, Marks: {node_info['marks']}")
+            # Collect update in the list
             query = "UPDATE `a3`.`statuses` SET `currenttopic` = %s, `currentscore` = %s WHERE `id` = 1"
-            #eai currenttopic er subject tar marks o change korte hobe borohate naki choto haate lekha seita dekhte hobr
             values = (node_info['name'], node_info['marks'])
-            db_cursor.execute(query, values)
-            db_conn.commit()
+            updates.append((query, values))
             break
 
-# except mysql.connector.Error as err:
-#     print(f"Error: {err}")
-#     sys.exit(1)
+    # Execute all updates in a batch
+    for update_query, update_values in updates:
+        db_cursor.execute(update_query, update_values)
+        db_conn.commit()
 
 finally:
     if db_cursor:

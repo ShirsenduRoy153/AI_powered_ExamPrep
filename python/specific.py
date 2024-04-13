@@ -18,7 +18,7 @@ data = {
 df = pd.DataFrame(data)
 
 # Calculate total slots and slots per subject based on priority
-total_slots = 20
+total_slots = 16*7
 slots_per_subject = df["Adjusted Priority"] * total_slots / df["Adjusted Priority"].sum()
 
 # Round slots to nearest integer

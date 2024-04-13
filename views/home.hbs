@@ -98,18 +98,14 @@
         .subject {
             border: 5px solid #d0d238;
             padding: 10px;
-            /* Adjust this value to reduce padding */
             margin-right: 5px;
-            /* Adjust this value to reduce the distance between subtopics */
             cursor: pointer;
             white-space: nowrap;
         }
         
         .subject img {
             max-width: 100%;
-            /* Ensure the image doesn't exceed the container width */
             height: auto;
-            /* Maintain the image aspect ratio */
         }
         
         #profileButton {
@@ -145,6 +141,136 @@
             border-radius: 15px;
         }
     </style>
+    <style>
+        .chain-container {
+            margin: 5px;
+        }
+
+        .graph-and-timetable-container {
+            display: flex;
+        }
+
+        .graph {
+            flex: 1;
+        }
+
+        .timetable {
+            flex: 0 0 30%;
+            background: linear-gradient(135deg, #071a3f, #715e9c, #755ab3);
+            padding: 20px;
+            margin-bottom: 20px;
+            max-height: 650px;
+        }
+
+        .chatbot {
+            flex: 0 0 30%;
+            background: linear-gradient(135deg, #071a3f, #715e9c, #755ab3);
+            margin-left: 10px;
+            max-height: 700px;
+        }
+
+        .timetable-container {
+            overflow-y: auto;
+            max-height: 400px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #d0d238;
+            padding: 10px;
+            text-align: left;
+            color: whitesmoke;
+        }
+
+        th {
+            background: linear-gradient(135deg, #5c0d7b, #2a5298);
+            position: sticky;
+            top: 0;
+            z-index: 0;
+        }
+    </style>
+    <style>
+        /* styles.css */
+        
+        .chat-container {
+            background-color: white;
+            width: 300px;
+            margin: 50px auto;
+            margin-bottom: 0px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 10px;
+        }
+        
+        .bot-container {
+            width: 150px;
+            height: 150px;
+            margin: 50px auto;
+            border: 5px solid #ccc;
+            border-radius: 100px;
+            padding-left: 10px;
+        }
+        
+        .chat-box {
+            height: 300px;
+            overflow-y: scroll;
+            border-bottom: 1px solid #ccc;
+            margin-bottom: 10px;
+        }
+        
+        #user-input {
+            width: 200px;
+            padding: 10px;
+            border-radius: 25px;
+        }
+        
+        button {
+            padding: 5px 10px;
+            border-radius: 25px;
+        }
+        
+        .bot-avatar {
+            width: 100px;
+            height: 100px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            animation: moveRobot 0.5s infinite alternate;
+            font-size: 100px;
+        }
+        
+        @keyframes moveRobot {
+            70% {
+                transform: translateY(20px);
+            }
+        }
+        
+        .message {
+            margin-bottom: 10px;
+        }
+        
+        .user-message {
+            background: linear-gradient(135deg, #071a3f, #715e9c, #755ab3);
+            text-align: right;
+            color: white;
+            padding: 25px;
+            margin-left: 50px;
+            border-radius: 50px;
+            border-bottom: 5px solid #ccc;
+        }
+        
+        .bot-message {
+            background: linear-gradient(135deg, #ff7b25, #fdd803);
+            text-align: left;
+            padding: 25px;
+            margin-right: 50px;
+            border-radius: 50px;
+            border-bottom: 5px solid #ccc;
+        }
+    </style>
 </head>
 
 <body>
@@ -155,8 +281,8 @@
         </div>
         <nav>
             <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Subjects</a></li>
+                <li><a href="#">About us</a></li>
+                <li><a href="#">Contact us</a></li>
                 <li><a href="#" id="profileButton">Profile</a></li>
             </ul>
         </nav>
@@ -166,68 +292,72 @@
 
     <main>
         <section class="hero rounded-box">
-            <h2>Welcome to Exam Preparation Website</h2>
-            <p>Your one-stop destination for exam preparation.</p>
+            <h2>Welcome to ExamPrep <span style="font-size:200%;">🚀</span></h2>
+            <span style="position: absolute; right: 50px; top: 150px; font-size: 75px;">💻📊⚙️</span>
+            <p>Your one-stop destination for exam preparations.</p>
         </section>
-        <section class="intro-section rounded-box">
-            <h2>Discover Your Strengths</h2>
-            <p>Explore personalized study recommendations and test your knowledge with our interactive quizzes.</p>
+        <section class="intro-section rounded-box" style="position: relative;">
+            <h2 style="color: azure;">
+                Discover Your Strengths <span style="font-size: 200%;">💡</span>
+            </h2>
+            <span style="position: absolute; right: 50px; top: 10px; font-size: 150px;">⏰</span>
+            <p style="color: azure;">Explore personalized study recommendations and test your knowledge with our interactive quizzes.</p>
             <h2><button id="take-test-button" class="take-test-button">Take Test</button></h2>
         </section>
         <section class="subjects section-box">
             <section class="hero rounded-box">
-                <h2>TOPICS</h2>
+                <h2>TOPICS <span style="font-size: 35px;">🧠</span></h2>
             </section>
             <div class="subject-container">
                 <div id="linkedlist" class="subject">
-                    <h4>Link List</h4>
+                    <h3 style="color:azure; border-radius:50px; background:#5c0d7b; padding:10px; box-shadow: 0 0 0 3px lightgrey, 0 0 0 #5c0d7b;">Linked List 🚂</h3>
                     <img src="https://via.placeholder.com/150" alt="Dummy Image"><br>
-                    <h3>lvl. <input type="range" value="{{statuses.linklist}}" min="1" max="5" disabled></h3>
+                    <h3 style="color: whitesmoke;">lvl. <input type="range" value="{{statuses.linkedlist}}" min="1" max="5" disabled></h3>
                 </div>
-                <div class="subject" onclick="openSubject()">
-                    <h4>Stack</h4>
+                <div id="stack" class="subject">
+                    <h3 style="color:azure; border-radius:50px; background:#5c0d7b; padding:10px; box-shadow: 0 0 0 3px lightgrey, 0 0 0 #5c0d7b;">Stack 📦📦📦</h3>
                     <img src="https://via.placeholder.com/150" alt="Dummy Image"><br>
-                    <h3>lvl.<input type="range" value="{{statuses.stack}}" min="1" max="5" disabled></h3>
+                    <h3 style="color: whitesmoke;">lvl.<input type="range" value="{{statuses.stack}}" min="0" max="5" disabled></h3>
                 </div>
-                <div class="subject" onclick="openSubject()">
-                    <h4>Queue</h4>
+                <div id="queue" class="subject">
+                    <h3 style="color:azure; border-radius:50px; background:#5c0d7b; padding:10px; box-shadow: 0 0 0 3px lightgrey, 0 0 0 #5c0d7b;">Queue🧍🚶‍♂️🚶‍♀️</h3>
                     <img src="https://via.placeholder.com/150" alt="Dummy Image"><br>
-                    <h3>lvl. <input type="range" value="{{statuses.queue}}" min="1" max="5" disabled></h3>
+                    <h3 style="color: whitesmoke;">lvl. <input type="range" value="{{statuses.queue}}" min="0" max="5" disabled></h3>
                 </div>
-                <div class="subject" onclick="openSubject()">
-                    <h4>Tree</h4>
+                <div id="tree" class="subject">
+                    <h3 style="color:azure; border-radius:50px; background:#5c0d7b; padding:10px; box-shadow: 0 0 0 3px lightgrey, 0 0 0 #5c0d7b;">Tree 🌴🌲🌴</h3>
                     <img src="https://via.placeholder.com/150" alt="Dummy Image"><br>
-                    <h3>lvl. <input type="range" value="{{statuses.tree}}" min="1" max="5" disabled></h3>
+                    <h3 style="color: whitesmoke;">lvl. <input type="range" value="{{statuses.tree}}" min="0" max="5" disabled></h3>
                 </div>
-                <div class="subject" onclick="openSubject()">
-                    <h4>Graph</h4>
+                <div id="graph" class="subject">
+                    <h3 style="color:azure; border-radius:50px; background:#5c0d7b; padding:10px; box-shadow: 0 0 0 3px lightgrey, 0 0 0 #5c0d7b;">Graph 📈 📉 📊</h3>
                     <img src="https://via.placeholder.com/150" alt="Dummy Image"><br>
-                    <h3>lvl. <input type="range" value="{{statuses.graph}}" min="1" max="5" disabled></h3>
+                    <h3 style="color: whitesmoke;">lvl. <input type="range" value="{{statuses.graph}}" min="0" max="5" disabled></h3>
                 </div>
-                <div class="subject" onclick="openSubject()">
-                    <h4>Hashing</h4>
+                <div id="hashing" class="subject">
+                    <h3 style="color:azure; border-radius:50px; background:#5c0d7b; padding:10px; box-shadow: 0 0 0 3px lightgrey, 0 0 0 #5c0d7b;">Hashing 🔐🗃️</h3>
                     <img src="https://via.placeholder.com/150" alt="Dummy Image"><br>
-                    <h3>lvl. <input type="range" value="{{statuses.hashing}}" min="1" max="5" disabled></h3>
+                    <h3 style="color: whitesmoke;">lvl. <input type="range" value="{{statuses.hashing}}" min="0" max="5" disabled></h3>
                 </div>
-                <div class="subject" onclick="openSubject()">
-                    <h4>Heap</h4>
+                <div id="heap" class="subject">
+                    <h3 style="color:azure; border-radius:50px; background:#5c0d7b; padding:10px; box-shadow: 0 0 0 3px lightgrey, 0 0 0 #5c0d7b;">Heap 📚📚📚</h3>
                     <img src="https://via.placeholder.com/150" alt="Dummy Image"><br>
-                    <h3>lvl. <input type="range" value="{{statuses.heap}}" min="1" max="5" disabled></h3>
+                    <h3 style="color: whitesmoke;">lvl. <input type="range" value="{{statuses.heap}}" min="0" max="5" disabled></h3>
                 </div>
-                <div class="subject" onclick="openSubject()">
-                    <h4>Sorting</h4>
+                <div id="sorting" class="subject">
+                    <h3 style="color:azure; border-radius:50px; background:#5c0d7b; padding:10px; box-shadow: 0 0 0 3px lightgrey, 0 0 0 #5c0d7b;">Sorting 🔄🔄🔄</h3>
                     <img src="https://via.placeholder.com/150" alt="Dummy Image"><br>
-                    <h3>lvl. <input type="range" value="{{statuses.sorting}}" min="1" max="5" disabled></h3>
+                    <h3 style="color: whitesmoke;">lvl. <input type="range" value="{{statuses.sorting}}" min="0" max="5" disabled></h3>
                 </div>
-                <div class="subject" onclick="openSubject()">
-                    <h4>Searching</h4>
+                <div id="searching" class="subject">
+                    <h3 style="color:azure; border-radius:50px; background:#5c0d7b; padding:10px; box-shadow: 0 0 0 3px lightgrey, 0 0 0 #5c0d7b;">Searching 🔍🕵️</h3>
                     <img src="https://via.placeholder.com/150" alt="Dummy Image"><br>
-                    <h3>lvl. <input type="range" value="{{statuses.searching}}" min="1" max="5" disabled></h3>
+                    <h3 style="color: whitesmoke;">lvl. <input type="range" value="{{statuses.searching}}" min="0" max="5" disabled></h3>
                 </div>
-                <div class="subject" onclick="openSubject()">
-                    <h4>Dynamic Programming</h4>
+                <div id="dynamicprogramming" class="subject">
+                    <h3 style="color: azure; border-radius: 50px; background: #5c0d7b; padding: 10px; box-shadow: 0 0 0 3px lightgrey, 0 0 0 #5c0d7b;">D Programming 🧠</h3>
                     <img src="https://via.placeholder.com/150" alt="Dummy Image"><br>
-                    <h3>lvl. <input type="range" value="{{statuses.dyanamicprograming}}" min="1" max="5" disabled></h3>
+                    <h3 style="color: whitesmoke;">lvl. <input type="range" value="{{statuses.dynamicprogramming}}" min="0" max="5" disabled></h3>
                 </div>
             </div>
 
@@ -235,16 +365,245 @@
 
         <section class="exam section-box">
             <section class="hero rounded-box">
-                <h2>Ongoing Topic</h2>
+                <h2>Ongoing Topic : {{statuses.currenttopic}} <span style="font-size:150%;">📖✒️</span></h2>
             </section>
-            <h3 style="color: rgb(220, 212, 212);">Exam Name: {{statuses.currenttopic}}</h3>
-            <p style="color: rgb(220, 212, 212);">Pro Tips: ed vitae urna nec metus luctus fringilla</p>
-            <p style="color: rgb(220, 212, 212);">Details: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae urna nec metus luctus fringilla.</p>
-        </section>
+            <section class="graph-and-timetable-container">
+                <section class="graph section-box">
+                    <svg class="graph-container" width="600" height="650"></svg>
+                </section>
+
+                {{!-- CHATBOT --}}
+                {{!-- CHATBOT --}}
+                {{!-- CHATBOT --}}
+            <section class="chatbot section-box">
+                <section class="hero rounded-box">
+                    <h2 style="display: flex;flex-direction: column-reverse;">Your AI helper🔍<div class="bot-avatar" style="margin-left: 200px;">🤖</div></h2>
+                </section>
+                <div class="chatbot-container hero rounded-box">
+                    <div class="chat-container">
+                        <div class="chat-box" id="chat-box"></div>
+                        <input type="text" id="user-input" placeholder="Type your message...">
+                        <button onclick="sendMessage()">Chat ⏎</button>
+                    </div>
+                    <script>
+                        const chatBox = document.getElementById('chat-box');
+                        const userInput = document.getElementById('user-input');
+
+                        function sendMessage() {
+                            const message = userInput.value;
+                            if (message.trim() !== '') {
+                                appendMessage('You', message, 'user-message');
+                                userInput.value = ''; // Clear input field
+
+                                // Send user input to the server
+                                $.ajax({
+                                    type: "POST",
+                                    url: "/ai",
+                                    data: { message: message },
+                                    success: function(response) {
+                                        if (response.success) {
+                                            appendMessage('Bot', response.result, 'bot-message');
+                                        } else {
+                                            alert(response.message);
+                                        }
+                                    },
+                                    error: function(xhr, status, error) {
+                                        console.error(xhr.responseText);
+                                        alert("An error occurred while processing your request.");
+                                    }
+                                });
+                            }
+                        }
+
+                        function appendMessage(sender, message, messageClass) {
+                            const messageElement = document.createElement('div');
+                            messageElement.classList.add('message');
+                            messageElement.classList.add(messageClass);
+                            messageElement.innerHTML = `<strong>${sender}:</strong> ${message}`;
+                            chatBox.appendChild(messageElement);
+                        }
+                    </script>
+                </div>
+            </section>
+
+            </section>
+
+            {{!-- TIMETABLE --}}
+            {{!-- TIMETABLE --}}
+            {{!-- TIMETABLE --}}
+            <section class="timetable section-box">
+                <section class="hero rounded-box">
+                    <h2>Study Timetable <span style="font-size:150%;">📅</span></h2>
+                </section>
+                <div class="timetable-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Monday</th>
+                                <th>Tuesday</th>
+                                <th>Wednesday</th>
+                                <th>Thursday</th>
+                                <th>Friday</th>
+                                <th>Saturday</th>
+                                <th>Sunday</th>
+                            </tr>
+                        </thead>
+                        <tbody id="timetable-body">
+                        </tbody>
+                    </table>
+                </div>
+                <div style="text-align: right; margin-top: 20px;">
+                    <button id="generateTimetable" class="progress-button" style="font-size: 18px;" style="padding: 15px 30px;" onclick="generateTimetable()">Generate Timetable</button>
+                </div>
+                <script>
+                    function generateTimetable() {
+                            $.ajax({
+                            type: "POST",
+                            url: "/timetable",
+                            success: function(response) {
+                                if (response.success == true) {
+                                    slots = response.result
+                                    generateTimetableWithData(slots);
+                                } else {
+                                    alert(response.message);
+                                }
+                            }
+                        });
+                    }
+
+                    function generateTimetableWithData(slots){
+                        const timetableDataString = slots; // Replace empty string with provided string
+                        const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+                        const slotsPerDay = 48; // Assuming 48 slots per day
+
+                        const lines = timetableDataString.trim().split(' ');
+                        const tableBody = document.getElementById('timetable-body');
+                        tableBody.innerHTML = ""; // Clear existing table body
+
+                        for (let i = 0; i < slotsPerDay; i++) {
+                            const row = document.createElement('tr');
+                            daysOfWeek.forEach((day, index) => {
+                                const cell = document.createElement('td');
+                                const slotIndex = i + slotsPerDay * index;
+                                if (slotIndex < lines.length) {
+                                    cell.textContent = lines[slotIndex].trim();
+                                }
+                                row.appendChild(cell);
+                            });
+                            tableBody.appendChild(row);
+                        }
+                    }
+                </script>
+            </section>
+
+            <section>
+                <script src="https://d3js.org/d3.v5.min.js"></script>
+                <script>
+                    // Sample graph dependencies
+                    var dependencies = {
+                        "L List": ["Stack", "Queue"],
+                        "Stack": ["Tree", "Graph"],
+                        "Queue": ["Hashing", "Heap"],
+                        "Tree": ["Sorting", "Searching"],
+                        "Graph": ["Heap", "D Prog"]
+                    };
+
+                    var svg = d3.select('.graph-container').append('svg').attr('width', 700).attr('height', 1000);
+
+                    var links = [];
+                    Object.keys(dependencies).forEach(function (node) {
+                        dependencies[node].forEach(function (dependency) {
+                            links.push({ source: node, target: dependency });
+                        });
+                    });
+
+                    // Create nodes
+                    var nodes = Array.from(new Set(links.flatMap(link => [link.source, link.target]))).map(name => ({ name }));
+
+                    // Create the force simulation
+                    var simulation = d3.forceSimulation(nodes)
+                        .force('link', d3.forceLink(links).id(d => d.name).distance(100).strength(1))
+                        .force('charge', d3.forceManyBody().strength(-300).distanceMin(50))
+                        .force('center', d3.forceCenter(280, 330));
+
+                    // Draw links
+                    var link = svg.append('g')
+                        .selectAll('line')
+                        .data(links)
+                        .enter().append('line')
+                        .attr('stroke', '#3498db')
+                        .attr('stroke-width', 3);
+
+                    // Draw nodes
+                    var node = svg.append('g')
+                        .selectAll('circle')
+                        .data(nodes)
+                        .enter().append('circle')
+                        .attr('r', 35)
+                        .attr('fill', '#3498db');
+
+                    // Draw labels for nodes
+                    var label = svg.append('g')
+                        .selectAll('text')
+                        .data(nodes)
+                        .enter().append('text')
+                        .text(d => d.name)
+                        .attr('font-size', '14px')
+                        .attr('fill', '#fff')
+                        .attr('text-anchor', 'middle')
+                        .attr('dy', '0.35em');
+
+                    // Update node positions during simulation
+                    simulation.on('tick', function () {
+                        link.attr('x1', d => d.source.x)
+                            .attr('y1', d => d.source.y)
+                            .attr('x2', d => d.target.x)
+                            .attr('y2', d => d.target.y);
+
+                        node.transition().duration(5) // Set the duration of the transition in milliseconds
+                            .attr('cx', d => d.x)
+                            .attr('cy', d => d.y);
+
+                        label.transition().duration(50)
+                            .attr('x', d => d.x)
+                            .attr('y', d => d.y);
+                    });
+
+                    // Handle node click events
+                    node.on('click', function (event, d) {
+                        // Implement your desired action on node click here
+                        console.log('Clicked on node:', d.name);
+                        restartSimulation();
+                    });
+
+                    // Handle background click events
+                    svg.on('click', function (event) {
+                        // Implement your desired action on background click here
+                        console.log('Clicked on the background');
+                        restartSimulation();
+                    });
+
+                    // Function to restart the simulation
+                    function restartSimulation() {
+                        // Reset node positions
+                        node.transition().duration(500)
+                            .attr('cx', d => d.x)
+                            .attr('cy', d => d.y);
+
+                        // Reset label positions
+                        label.transition().duration(500)
+                            .attr('x', d => d.x)
+                            .attr('y', d => d.y);
+
+                        // Restart the simulation
+                        simulation.alpha(1.5).restart();
+                    }
+                </script>
+            </section>
 
         <section class="yourself section-box">
             <section class="hero rounded-box">
-                <h2>Yourself</h2>
+                <h2>Yourself <span style="font-size:150%;">🎓</span></h2>
             </section>
             <p style="color: rgb(220, 212, 212);">Personalized study recommendations, progress tracker, and tips here.</p>
             <h2><button id="progress" class="progress-button">Check your progress</button></h2>
@@ -256,13 +615,50 @@
     </footer>
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <script>
+    const startTime = new Date();
     document.getElementById("take-test-button").addEventListener("click", function() {
         alert("Are you ready to take a test...")
         window.location.href = "http://localhost:4500/mcq";
     });
 
     document.getElementById("linkedlist").addEventListener("click", function() {
+        window.location.href = "http://localhost:4500/doc/linkedlist";
+    });
+
+    document.getElementById("stack").addEventListener("click", function() {
+        window.location.href = "http://localhost:4500/doc/stack";
+    });
+
+    document.getElementById("queue").addEventListener("click", function() {
+        window.location.href = "http://localhost:4500/doc/queue";
+    });
+
+    document.getElementById("tree").addEventListener("click", function() {
+        window.location.href = "http://localhost:4500/doc/tree";
+    });
+
+    document.getElementById("graph").addEventListener("click", function() {
+        window.location.href = "http://localhost:4500/doc/graph";
+    });
+
+    document.getElementById("hashing").addEventListener("click", function() {
+        window.location.href = "http://localhost:4500/doc/hashing";
+    });
+
+    document.getElementById("heap").addEventListener("click", function() {
         window.location.href = "http://localhost:4500/doc/heap";
+    });
+
+    document.getElementById("sorting").addEventListener("click", function() {
+        window.location.href = "http://localhost:4500/doc/sorting";
+    });
+
+    document.getElementById("searching").addEventListener("click", function() {
+        window.location.href = "http://localhost:4500/doc/searching";
+    });
+
+    document.getElementById("dynamicprogramming").addEventListener("click", function() {
+        window.location.href = "http://localhost:4500/doc/dynamicprogramming";
     });
 
     document.getElementById("progress").addEventListener("click", function() {

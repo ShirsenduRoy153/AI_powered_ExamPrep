@@ -11,7 +11,10 @@ const { status } = require('../models');
 
 const { spawn } = require('child_process');
 
-function runPythonFunction(topic, marks) {
+//PYTHON
+//PYTHON
+//PYTHON
+function TestMCQ(topic, marks) {
     if (typeof topic !== 'string' || typeof marks !== 'string') {
         return Promise.reject(new Error('Invalid topic or marks'));
     }
@@ -22,6 +25,78 @@ function runPythonFunction(topic, marks) {
         // Capture the standard output
         pythonProcess.stdout.on('data', (data) => {
             output += data.toString();
+            // console.log(output)
+        });
+
+        // Capture the standard error
+        pythonProcess.stderr.on('data', (data) => {
+            console.error(`Python error: ${data}`);
+            reject(data.toString());
+        });
+
+        // Handle process completion
+        pythonProcess.on('close', (code) => {
+            if (code === 0) {
+                console.log("Python script output:", output.trim());
+                resolve(output.trim());
+            } else {
+                console.error(`Python process exited with code ${code}`);
+                reject(`Python process exited with code ${code}`);
+            }
+        });
+    });
+}
+
+//CHATTING
+//CHATTING
+//CHATTING
+chats = "";
+
+function AI(chat) {
+    return new Promise((resolve, reject) => {
+        const pythonProcess = spawn('python', ['python/ai.py', chat]);
+        let output = '';
+
+        // Capture the standard output
+        pythonProcess.stdout.on('data', (data) => {
+            output += data.toString();
+            chats = output
+        });
+
+        // Capture the standard error
+        pythonProcess.stderr.on('data', (data) => {
+            console.error(`Python error: ${data}`);
+            reject(data.toString());
+        });
+
+        // Handle process completion
+        pythonProcess.on('close', (code) => {
+            if (code === 0) {
+                console.log("Python script output:", output.trim());
+                resolve(output.trim());
+            } else {
+                console.error(`Python process exited with code ${code}`);
+                reject(`Python process exited with code ${code}`);
+            }
+        });
+    });
+}
+
+//TIMETABLE PYTHON
+//TIMETABLE PYTHON
+//TIMETABLE PYTHON
+slots = "";
+
+function TimeTable() {
+    return new Promise((resolve, reject) => {
+        const pythonProcess = spawn('python', ['python/timetable.py']);
+        let output = '';
+
+        // Capture the standard output
+        pythonProcess.stdout.on('data', (data) => {
+            output += data.toString();
+            slots = output;
+            console.log(slots);
         });
 
         // Capture the standard error
@@ -86,8 +161,18 @@ router.get("/mcq", async(req, res, next) => {
         where: { t: topic }
     })
     res.render('mcq', { title: 'mcq-m', tests, topic })
-        //Exception Your Course is completed...
 })
+
+router.get("/mcq/:topic", async(req, res, next) => {
+    topic = req.params.topic;
+    const tests = await test.findAll({
+        where: { t: topic }
+    });
+
+    res.render('mcq', { title: 'mcq', tests, topic });
+});
+
+
 
 // router.get("/mcq-m/:topic", async(req, res, next) => {
 //     console.log(req.params.topic)
@@ -97,6 +182,7 @@ router.get("/mcq", async(req, res, next) => {
 //     res.render('mcq-m', { title: 'mcq-m', tests, topic })
 //         //Exception Your Course is completed...
 // })
+
 
 marks = 0
 
@@ -124,7 +210,7 @@ router.post("/mcq_post", async(req, res, next) => {
     console.log("S C O R E = ", marks)
     const result = marks
 
-    await runPythonFunction(req.body.t[0], marks.toString());
+    await TestMCQ(req.body.t[0], marks.toString());
 
 
     marks = 0
@@ -136,12 +222,69 @@ router.post("/mcq_post", async(req, res, next) => {
     });
 })
 
-router.get("/doc/:name", async(req, res, next) => {
-    res.render('doc', { title: 'doc' })
+//TIME CALCULATION
+router.post("/time", async(req, res, next) => {
+    console.log(req.body);
+
+    const { topic, rating, time } = req.body;
+
+    const statuses = await status.findOne({
+        where: { id: 1 }
+    })
+
+    if (statuses) {
+        const newTime = parseFloat(time) + parseFloat(statuses[`${topic}_time`]);
+
+        await status.update({
+            [`${topic}_time`]: newTime,
+            [`${topic}_rating`]: rating
+        }, { where: { id: 1 } });
+
+        res.json({
+            success: true,
+            code: 200
+        });
+    } else {
+        res.status(404).json({
+            success: false,
+            error: "Record not found",
+            code: 404
+        });
+    }
+})
+
+router.get("/doc/:topic", async(req, res, next) => {
+    const topic = req.params.topic;
+    res.render('doc', { title: 'doc', topic })
 })
 
 router.get("/progress", async(req, res, next) => {
-    res.render('progress', { title: 'progress' })
+    const statuses = await status.findOne({
+        where: { id: 1 }
+    })
+    res.render('progress', { title: 'progress', statuses })
+})
+
+router.post("/ai", async(req, res, next) => {
+    await AI(req.body.message);
+    console.log("---server---")
+    console.log(chats)
+    res.json({
+        success: true,
+        code: 200,
+        result: chats
+    });
+})
+
+
+router.post("/timetable", async(req, res, next) => {
+    await TimeTable();
+    //NEED TO ADD PARAMETERS WHEN ARE NOT THE COMFORTABLE TIME
+    res.json({
+        success: true,
+        code: 200,
+        result: slots
+    });
 })
 
 module.exports = router;
