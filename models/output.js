@@ -14,22 +14,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   output.init({
-    linkedlist_priority: DataTypes.DECIMAL,
-    stack_priority: DataTypes.DECIMAL,
-    queue_priority: DataTypes.DECIMAL,
-    tree_priority: DataTypes.DECIMAL,
-    graph_priority: DataTypes.DECIMAL,
-    hashing_priority: DataTypes.DECIMAL,
-    heap_priority: DataTypes.DECIMAL,
-    sorting_priority: DataTypes.DECIMAL,
-    searching_priority: DataTypes.DECIMAL,
-    dynamicprogramming_priority: DataTypes.DECIMAL,
-    chain1: DataTypes.DECIMAL,
-    chain2: DataTypes.DECIMAL,
-    chain3: DataTypes.DECIMAL,
-    chain4: DataTypes.DECIMAL,
-    chain5: DataTypes.DECIMAL,
-    chain6: DataTypes.DECIMAL
+    subject: DataTypes.STRING,
+    time: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'output',

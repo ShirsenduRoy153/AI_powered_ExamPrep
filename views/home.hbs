@@ -271,6 +271,11 @@
             border-bottom: 5px solid #ccc;
         }
     </style>
+    <style>
+        .selected {
+            background-color: #99ccff;
+        }
+    </style>
 </head>
 
 <body>
@@ -436,6 +441,91 @@
                     <h2>Study Timetable <span style="font-size:150%;">📅</span></h2>
                 </section>
                 <div class="timetable-container">
+                    <h1 style="color: white;">Busy Slots</h1>
+                    <table>
+                        <thead>
+                            <tr>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body"></tbody>
+                    </table>
+                    <div id="selected-items" style="background-color: white; border-radius: 10px; padding: 5px; margin: 10px;">
+                        <h2>Selected Items:</h2>
+                        <p id="selected-items-list"></p>
+                    </div>
+                    <script>
+                        const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+                        const slotsPerDay = 48;
+
+                        const tableBody = document.getElementById('table-body');
+                        const selectedItemsList = document.getElementById('selected-items-list');
+
+                        let selectedSeats = [];
+
+                        function createTable() {
+                            for (let dayIndex = 0; dayIndex < days.length; dayIndex++) {
+                                const dayRow = document.createElement('tr');
+
+                                const dayCell = document.createElement('td');
+                                dayCell.textContent = days[dayIndex];
+                                dayCell.style.fontWeight = 'bold';
+                                dayRow.appendChild(dayCell);
+
+                                for (let slotIndex = 0; slotIndex < slotsPerDay; slotIndex++) {
+                                    const slotCell = document.createElement('td');
+                                    slotCell.textContent = slotIndex;
+                                    slotCell.addEventListener('click', function() {
+                                        this.classList.toggle('selected');
+                                        updateSelectedItemsList();
+                                        updateSelectedSeats(dayIndex, slotIndex);
+                                    });
+                                    dayRow.appendChild(slotCell);
+                                }
+
+                                tableBody.appendChild(dayRow);
+                            }
+                        }
+
+                        function updateSelectedItemsList() {
+                            const selectedSlots = document.querySelectorAll('.selected');
+                            const selectedItems = {};
+
+                            selectedSlots.forEach(slot => {
+                                const day = slot.parentNode.firstChild.textContent;
+                                const slotNumber = slot.textContent;
+
+                                if (!selectedItems[day]) {
+                                    selectedItems[day] = [slotNumber];
+                                } else {
+                                    selectedItems[day].push(slotNumber);
+                                }
+                            });
+
+                            let output = '';
+                            for (const day in selectedItems) {
+                                output += `${day} - ${selectedItems[day].join(', ')} `;
+                            }
+
+                            selectedItemsList.textContent = output.trim() || 'No items selected';
+                        }
+
+                        function updateSelectedSeats(dayIndex, slotIndex) {
+                            if (!selectedSeats[dayIndex]) {
+                                selectedSeats[dayIndex] = [slotIndex];
+                            } else {
+                                const slotIndexInDay = selectedSeats[dayIndex].indexOf(slotIndex);
+                                if (slotIndexInDay === -1) {
+                                    selectedSeats[dayIndex].push(slotIndex);
+                                } else {
+                                    selectedSeats[dayIndex].splice(slotIndexInDay, 1);
+                                }
+                            }
+
+                            console.log(selectedSeats);
+                        }
+
+                        createTable();
+                    </script>
                     <table>
                         <thead>
                             <tr>
@@ -460,6 +550,7 @@
                             $.ajax({
                             type: "POST",
                             url: "/timetable",
+                            data: {value:JSON.stringify(selectedSeats)},
                             success: function(response) {
                                 if (response.success == true) {
                                     slots = response.result

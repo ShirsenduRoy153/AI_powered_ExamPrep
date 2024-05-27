@@ -112,3 +112,10 @@ for subject, details in subject_details.items():
 table = pd.DataFrame(data, columns=['Subject', 'Personal Priority'])
 
 print(table)
+
+print("Priority")
+print("Priority")
+print("Priority")
+print("Priority")
+print("Priority")
+print("Priority")

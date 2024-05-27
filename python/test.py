@@ -16,10 +16,6 @@ def fill_timetable(timetable, items, total_hours):
     item_index = 0
     consecutive_counter = 0
     study_counter = 0
-    day_cycle = 0  # To ensure even distribution
-
-    total_slots_needed = sum(int(hours * 2) for hours in total_hours)
-    slots_per_day = total_slots_needed // 7 + (total_slots_needed % 7 > 0)
 
     for hours in total_hours:
         slots_needed = int(hours * 2)  # Convert hours to slots (assuming 30 min slots)
@@ -29,8 +25,8 @@ def fill_timetable(timetable, items, total_hours):
                 day += 1
 
             if day >= 7:
-                day = 0
-                day_cycle += 1
+                print("Warning: Not enough slots available in the timetable for all study hours.")
+                return timetable
 
             if timetable[day][slot_counter] == "Empty":
                 if study_counter == 3:
@@ -46,10 +42,6 @@ def fill_timetable(timetable, items, total_hours):
                         consecutive_counter = 0
 
             slot_counter += 1
-
-            if slot_counter >= slots_per_day * day_cycle:
-                slot_counter = 0
-                day += 1
 
         # Add a rest slot after every set of study hours
         if study_counter == 3:

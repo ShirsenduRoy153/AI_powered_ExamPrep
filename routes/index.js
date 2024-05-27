@@ -5,10 +5,6 @@ const router = express.Router();
 const { test } = require('../models');
 const { status } = require('../models');
 
-//-----------------------Future Use-----------------------//
-// const { type } = require('os');
-// const { resolve } = require('path');
-
 const { spawn } = require('child_process');
 
 //PYTHON
@@ -87,9 +83,12 @@ function AI(chat) {
 //TIMETABLE PYTHON
 slots = "";
 
-function TimeTable() {
+function TimeTable(value) {
     return new Promise((resolve, reject) => {
-        const pythonProcess = spawn('python', ['python/timetable.py']);
+        spawn('python', ['python/priority.py']);
+        spawn('python', ['python/lpp.py']);
+        spawn('python', ['python/specific.py']);
+        const pythonProcess = spawn('python', ['python/timetable.py', value]);
         let output = '';
 
         // Capture the standard output
@@ -278,8 +277,9 @@ router.post("/ai", async(req, res, next) => {
 
 
 router.post("/timetable", async(req, res, next) => {
-    await TimeTable();
-    //NEED TO ADD PARAMETERS WHEN ARE NOT THE COMFORTABLE TIME
+    console.log(typeof(req.body.value))
+    console.log(req.body.value)
+    await TimeTable(req.body.value);
     res.json({
         success: true,
         code: 200,

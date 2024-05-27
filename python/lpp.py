@@ -1,3 +1,27 @@
+import mysql.connector
+from decimal import Decimal
+
+# Connect to the database
+db_connection = mysql.connector.connect(
+    host="127.0.0.1",
+    user="root",
+    password="Shirsendu@15",
+    database="a3"
+)
+
+db_cursor = db_connection.cursor()
+
+# Retrieve values from the database
+db_cursor.execute("SELECT linkedlist_priority, stack_priority, queue_priority, tree_priority, graph_priority, hashing_priority, heap_priority, sorting_priority, searching_priority, dynamicprogramming_priority FROM statuses WHERE id = 1")
+result = db_cursor.fetchone()
+
+# Close the database connection
+db_cursor.close()
+db_connection.close()
+
+# Convert database results to floats
+result = [float(value) if isinstance(value, Decimal) else value for value in result]
+
 from pulp import LpVariable, LpProblem, lpSum, LpBinary, value, LpMaximize, PULP_CBC_CMD
 
 def find_chains_from_node(dependencies, current_node, visited, current_chain, all_chains):
@@ -40,19 +64,17 @@ dependencies = {
 start_node = "LinkedList"
 chains = get_chains_from_node(dependencies, start_node)
 
-print(chains)
-
 data_structure_priority = {
-    "LinkedList": 2.5,
-    "Stack": 2.5,
-    "Queue": 3.5,
-    "Tree": 2.5,
-    "Graph": 3.963,
-    "Hashing": 3.803,
-    "Heap": 4.0,
-    "Sorting": 3.845,
-    "Searching": 2.5,
-    "DynamicProgramming": 0.000
+    "LinkedList": result[0],
+    "Stack": result[1],
+    "Queue": result[2],
+    "Tree": result[3],
+    "Graph": result[4],
+    "Hashing": result[5],
+    "Heap": result[6],
+    "Sorting": result[7],
+    "Searching": result[8],
+    "DynamicProgramming": result[9]
 }
 
 chain_strength = [
@@ -67,7 +89,14 @@ chain_vars = LpVariable.dicts("Chain", range(len(chains)), 0, 1, LpBinary)
 
 prob = LpProblem("StudyChainOptimization", LpMaximize)
 
-total_strength_limit = 10.0 #LIMIT
+# LIMIT
+# LIMIT
+# LIMIT
+total_strength_limit = 30.0 #LIMIT example
+# LIMIT
+# LIMIT
+# LIMIT
+
 penalty = 1000
 
 # Assign weights
@@ -89,3 +118,37 @@ total_strength = sum(chain_strength[i] for i in range(len(chains)) if value(chai
 print("Total Strength:", total_strength)
 
 print("Chain Strengths:", chain_strength)
+
+l = []
+
+for i in selected_chains:
+    for j in i:
+        l.append(j)
+
+l = ', '.join(f'"{item}"' for item in l)
+print("I T E M S = ", l)
+
+# Update the priority in the database
+db_connection = mysql.connector.connect(
+    host="127.0.0.1",
+    user="root",
+    password="Shirsendu@15",
+    database="a3"
+)
+
+db_cursor = db_connection.cursor()
+
+update_query = f"UPDATE outputs SET subject = '{l}' WHERE id = 1"
+db_cursor.execute(update_query)
+
+db_connection.commit()
+
+db_cursor.close()
+db_connection.close()
+
+print("LPP")
+print("LPP")
+print("LPP")
+print("LPP")
+print("LPP")
+print("LPP")
