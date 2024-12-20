@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
         }
     }
     status.init({
+        limit: DataTypes.INTEGER,
         currenttopic: DataTypes.STRING,
         currentscore: DataTypes.INTEGER,
         linkedlist: DataTypes.INTEGER,

@@ -168,7 +168,7 @@ router.get("/mcq/:topic", async(req, res, next) => {
         where: { t: topic }
     });
 
-    res.render('mcq', { title: 'mcq', tests, topic });
+    res.render('mcq', { title: 'mcq-m', tests, topic });
 });
 
 

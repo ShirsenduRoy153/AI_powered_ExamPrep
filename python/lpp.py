@@ -12,7 +12,7 @@ db_connection = mysql.connector.connect(
 db_cursor = db_connection.cursor()
 
 # Retrieve values from the database
-db_cursor.execute("SELECT linkedlist_priority, stack_priority, queue_priority, tree_priority, graph_priority, hashing_priority, heap_priority, sorting_priority, searching_priority, dynamicprogramming_priority FROM statuses WHERE id = 1")
+db_cursor.execute("SELECT linkedlist_priority, stack_priority, queue_priority, tree_priority, graph_priority, hashing_priority, heap_priority, sorting_priority, searching_priority, dynamicprogramming_priority, `limit` FROM statuses WHERE id = 1")
 result = db_cursor.fetchone()
 
 # Close the database connection
@@ -92,7 +92,7 @@ prob = LpProblem("StudyChainOptimization", LpMaximize)
 # LIMIT
 # LIMIT
 # LIMIT
-total_strength_limit = 30.0 #LIMIT example
+total_strength_limit = result[10] #LIMIT
 # LIMIT
 # LIMIT
 # LIMIT

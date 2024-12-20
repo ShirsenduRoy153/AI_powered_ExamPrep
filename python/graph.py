@@ -14,7 +14,7 @@ try:
     print("MySQL Connection Established")
     db_cursor = db_conn.cursor()
 
-    db_cursor.execute("SELECT linkedlist,stack,queue,tree,graph,hashing,heap,sorting,searching,dynamicprogramming FROM statuses WHERE id = 1")
+    db_cursor.execute("SELECT linkedlist, stack, queue, tree, graph, hashing, heap, sorting, searching, dynamicprogramming, `limit` FROM statuses WHERE id = 1")
     result = db_cursor.fetchone()
 
     topic = sys.argv[1]
@@ -22,7 +22,16 @@ try:
     marks = int(marks)
     marks_threshold = 3
 
-    print("TOPIC IN LOWER CASE : ", topic.lower())
+    print("TOPIC IN LOWER CASE: ", topic.lower())
+
+    # Initialize limit and adjust based on marks
+    limit = result[10]
+    if marks > marks_threshold:
+        limit += 2
+    else:
+        limit -= 2
+
+    print("Updated limit: ", limit)
 
     # Collect updates in a list
     updates = []
@@ -89,8 +98,8 @@ try:
         if node_info['marks'] < marks_threshold:
             print(f"Name: {node_info['name']}, Marks: {node_info['marks']}")
             # Collect update in the list
-            query = "UPDATE `a3`.`statuses` SET `currenttopic` = %s, `currentscore` = %s WHERE `id` = 1"
-            values = (node_info['name'], node_info['marks'])
+            query = "UPDATE `a3`.`statuses` SET `currenttopic` = %s, `currentscore` = %s, `limit` = %s WHERE `id` = 1"
+            values = (node_info['name'], node_info['marks'], limit)
             updates.append((query, values))
             break
 

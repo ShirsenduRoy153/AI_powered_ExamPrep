@@ -240,7 +240,9 @@
 
     <main>
         <section class="hero rounded-box">
+            <h1 id="topic" hidden>{{topic}}</h1>
             <h2>{{topic}} Resources</h2>
+            <h2><button id="take-test-button" class="submit-rating-btn">Take Test</button></h2>
         </section>
 
         <!-- Documents Section -->
@@ -308,6 +310,11 @@
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <script>
         $(document).ready(function() {
+            document.getElementById("take-test-button").addEventListener("click", function() {
+                alert("Are you ready to take a test on " + topic);
+                window.location.href = `http://localhost:4500/mcq/${topic}`;
+            });
+            var topic = $("#topic").text().trim();
             const startTime = new Date();
 
             // Show the modal when the close button is clicked
