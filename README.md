@@ -1,4 +1,4 @@
-AI-Powered Exam Preparation Platform
+# AI-Powered Exam Preparation Platform
 
 An AI-driven exam preparation platform that generates personalized study plans using Machine Learning in Python, while handling all CRUD operations, frontend, and backend logic in JavaScript.
 
