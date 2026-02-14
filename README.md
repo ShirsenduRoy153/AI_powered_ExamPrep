@@ -1,7 +1,49 @@
-AI_Powered_ExamPrep
+An AI-driven exam preparation platform that generates personalized study plans using Machine Learning in Python, while handling all CRUD operations, frontend, and backend logic in JavaScript.
 
-Built an AI-powered exam preparation platform using Neural Networks and LPP for personalized study plans.
+🚀 Features
 
-Developed the backend with Node.js (Express) and the frontend using HTML, CSS, JavaScript, and AJAX.
+Personalized study plans using Neural Networks & LPP
 
-Integrated Python-based AI modules and Sequelize ORM for intelligent data management.
+Full CRUD operations for users, subjects, progress tracking
+
+RESTful backend built with Node.js & Express
+
+Interactive frontend using HTML, CSS, JavaScript, AJAX
+
+Intelligent data handling with Sequelize ORM
+
+Python-based ML engine for in-depth AI computations
+
+🛠 Tech Stack Frontend
+
+HTML
+
+CSS
+
+JavaScript
+
+AJAX
+
+Backend
+
+Node.js
+
+Express.js
+
+Sequelize ORM
+
+AI / Machine Learning
+
+Python
+
+Neural Networks
+
+LPP (Locality Preserving Projections)
+
+🧠 Architecture Overview
+
+Frontend (JS): Handles UI, user interactions, and API calls using AJAX.
+
+Backend (Node.js): Manages authentication, CRUD operations, database interactions, and API endpoints.
+
+Machine Learning Module (Python): Performs in-depth AI calculations and generates personalized study recommendations. The Node.js backend communicates with the Python ML layer for predictions and analysis.
